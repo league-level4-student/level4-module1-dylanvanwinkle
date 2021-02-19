@@ -144,7 +144,7 @@ case down:
 	break;
 
 		default:
-			JOptionPane.showMessageDialog(Null, "invalid key.");
+			JOptionPane.showMessageDialog(null, "invalid key.");
 			break;
 		}
 		// if an arrow key is pressed, set the snake's 
