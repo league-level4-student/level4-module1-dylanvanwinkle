@@ -75,7 +75,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 
 	public void startGame() {
 		//1. Save the instructions for the game in the following string variable.
-		String instructions = "";
+		String instructions = "1. Have fun!!"+ "2. Have fun!!!" + "3. DON'T ASK QUESTIONS!!!!" + "4. Figure it out.";
 		
 		String[] options = new String[] { "Expert", "Moderate", "Beginner" };
 		int input = JOptionPane.showOptionDialog(null, instructions, "Snake", 0, -1, null, options, 0);
@@ -85,8 +85,26 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		//2. Use a switch statement to determine which difficulty was chosen.
 		//   Use timer.setDelay(delay) with different numbers to change the speed
 		//   of the game. The smaller the number, the faster it goes.
+switch (choice) {
+case "Expert":
+	timer.setDelay(10);
+	break;
+	
+case "Moderate":
+	timer.setDelay(20);
+	break;
+	
+case "Beginner":
+	timer.setDelay(30);
+	break;
 
+default:
+	System.out.println("Something went wrong.");
+	System.exit(0);
+	break;
+}
 		//3. start the timer
+timer.start();
 	}
 
 	public static void main(String[] args) {
@@ -103,7 +121,32 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		//1. Use a switch statement on e.getKeyCode()
 		//   to determine which key was pressed.
-		
+		int left = 37;
+		int right = 39;
+		int up = 38;
+		int down = 40;
+		int space = 32;
+		switch (e.getKeyCode()) {
+		case left:
+			snake.setDirection(Direction.LEFT);
+			break;
+			
+case right:
+	snake.setDirection(Direction.RIGHT);
+			break;
+			
+case up:
+	snake.setDirection(Direction.UP);
+	break;
+	
+case down:
+	snake.setDirection(Direction.DOWN);
+	break;
+
+		default:
+			JOptionPane.showMessageDialog(Null, "invalid key.");
+			break;
+		}
 		// if an arrow key is pressed, set the snake's 
 		// direction accordingly
 		

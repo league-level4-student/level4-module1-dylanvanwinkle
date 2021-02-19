@@ -12,6 +12,31 @@ public class CustomButtonOptionPanes {
 		String choice = options[input];
 		
 		//use a switch statement to do something cool for each option
-		
+		switch(choice) {
+		case "Sunday": 
+			JOptionPane.showMessageDialog(null, "Happy sunday!!!");
+			break;
+		case "Monday": 
+			JOptionPane.showMessageDialog(null, "Happy monday!!!");
+			break;
+		case "Tuesday": 
+			JOptionPane.showMessageDialog(null, "Happy tuesday!!!");
+			break;
+		case "Wednesday":
+			JOptionPane.showMessageDialog(null, "Happy wednesday!!!");
+			break;
+		case "Thursday":
+			JOptionPane.showMessageDialog(null, "Happy thursday!!!");
+			break;
+		case "Friday":
+			JOptionPane.showMessageDialog(null, "Happy friday!!!");
+			break;
+		case "Saturday":
+			JOptionPane.showMessageDialog(null, "Happy saturday!!!");
+			break;
+		default: 
+			System.out.println("Something went wrong :(");
+			break;
+		}
 	}
 }
