@@ -38,6 +38,47 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	private Location foodLocation;
 
 	public _00_SnakeGame() {
+		makeFrame();
+		
+		setFoodLocation();
+
+		startGame();
+	}
+
+	public void startGame() {
+		// 1. Save the instructions for the game in the following string variable.
+		String instructions = "1. Have fun!!" + "2. Have fun!!!" + "3. DON'T ASK QUESTIONS!!!!" + "4. Figure it out.";
+
+		String[] options = new String[] { "Expert", "Moderate", "Beginner" };
+		int input = JOptionPane.showOptionDialog(null, instructions, "Snake", 0, -1, null, options, 0);
+
+		String choice = options[input];
+
+		// 2. Use a switch statement to determine which difficulty was chosen.
+		// Use timer.setDelay(delay) with different numbers to change the speed
+		// of the game. The smaller the number, the faster it goes.
+		switch (choice) {
+		case "Expert":
+			timer.setDelay(10);
+			break;
+
+		case "Moderate":
+			timer.setDelay(20);
+			break;
+
+		case "Beginner":
+			timer.setDelay(30);
+			break;
+
+		default:
+			System.out.println("Something went wrong.");
+			System.exit(0);
+			break;
+		}
+		// 3. start the timer
+		timer.start();
+	}
+	public void makeFrame(){
 		snake = new Snake(new Location(WIDTH / 2, HEIGHT / 2));
 
 		window = new JFrame("Snake");
@@ -68,43 +109,15 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 
-		setFoodLocation();
-
-		startGame();
 	}
-
-	public void startGame() {
-		//1. Save the instructions for the game in the following string variable.
-		String instructions = "1. Have fun!!"+ "2. Have fun!!!" + "3. DON'T ASK QUESTIONS!!!!" + "4. Figure it out.";
+	public void restartGame(){
+		window.dispose();
 		
-		String[] options = new String[] { "Expert", "Moderate", "Beginner" };
-		int input = JOptionPane.showOptionDialog(null, instructions, "Snake", 0, -1, null, options, 0);
-
-		String choice = options[input];
+		makeFrame();
 		
-		//2. Use a switch statement to determine which difficulty was chosen.
-		//   Use timer.setDelay(delay) with different numbers to change the speed
-		//   of the game. The smaller the number, the faster it goes.
-switch (choice) {
-case "Expert":
-	timer.setDelay(10);
-	break;
-	
-case "Moderate":
-	timer.setDelay(20);
-	break;
-	
-case "Beginner":
-	timer.setDelay(30);
-	break;
-
-default:
-	System.out.println("Something went wrong.");
-	System.exit(0);
-	break;
-}
-		//3. start the timer
-timer.start();
+		setFoodLocation();
+		
+		startGame();
 	}
 
 	public static void main(String[] args) {
@@ -119,61 +132,73 @@ timer.start();
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//1. Use a switch statement on e.getKeyCode()
-		//   to determine which key was pressed.
-		int left = 37;
-		int right = 39;
-		int up = 38;
-		int down = 40;
-		int space = 32;
+		// 1. Use a switch statement on e.getKeyCode()
+		// to determine which key was pressed.
 		switch (e.getKeyCode()) {
-		case left:
+		case KeyEvent.VK_LEFT:
 			snake.setDirection(Direction.LEFT);
 			break;
-			
-case right:
-	snake.setDirection(Direction.RIGHT);
+
+		case KeyEvent.VK_RIGHT:
+			snake.setDirection(Direction.RIGHT);
 			break;
-			
-case up:
-	snake.setDirection(Direction.UP);
-	break;
-	
-case down:
-	snake.setDirection(Direction.DOWN);
-	break;
+
+		case KeyEvent.VK_UP:
+			snake.setDirection(Direction.UP);
+			break;
+
+		case KeyEvent.VK_DOWN:
+			snake.setDirection(Direction.DOWN);
+			break;
+		case KeyEvent.VK_SPACE:
+			snake.feed();
 
 		default:
 			JOptionPane.showMessageDialog(null, "invalid key.");
 			break;
 		}
-		// if an arrow key is pressed, set the snake's 
+		// if an arrow key is pressed, set the snake's
 		// direction accordingly
-		
+
 		// if the space key is pressed, call the snake's feed method
-		
+
 	}
 
 	private void setFoodLocation() {
-		//1. Create a new Location object that is set to a random location
-		
-		//2. set the foodLocation variable equal to the Location object you just created.
-		//   use the snake's isLocationOnSnake method to make sure you don't put the food on the snake
-		
+		// 1. Create a new Location object that is set to a random location
+Random ranGen = new Random();
+int foodX = ranGen.nextInt(WIDTH);
+int foodY = ranGen.nextInt(HEIGHT);
+Location location = new Location(foodY, foodY);
+		// 2. set the foodLocation variable equal to the Location object you just
+		// created.
+foodLocation = location;
+		// use the snake's isLocationOnSnake method to make sure you don't put the food
+		// on the snake
+snake.isLocationOnSnake(foodLocation);
+
 	}
 
 	private void gameOver() {
-		
-		//1. stop the timer
-		
-		//2. tell the user their snake is dead
-		
-		//3. ask them if they want to play again.
-		
-		//4. if they want to play again
-		//   reset the snake and the food and start the timer
-		//   else, exit the game
-		
+
+		// 1. stop the timer
+timer.stop();
+		// 2. tell the user their snake is dead
+JOptionPane.showMessageDialog(null, "Your snake has died");
+		// 3. ask them if they want to play again.
+int choice = JOptionPane.showConfirmDialog(null, "Do you want to play again");
+if (choice == JOptionPane.YES_OPTION) {
+restartGame();
+}
+if (choice == JOptionPane.NO_OPTION) {
+	System.exit(0);
+}else {
+	System.exit(0);
+}
+		// 4. if they want to play again
+		// reset the snake and the food and start the timer
+		// else, exit the game
+
 	}
 
 	@Override
@@ -183,14 +208,20 @@ case down:
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//1. update the snake
-
-		//2. if the snake is colliding with its own body 
-		//   or if the snake is out of bounds, call gameOver
-
-		//3. if the location of the head is equal to the location of the food,
-		// 	 feed the snake and set the food location
-
-		//4. call panel.repaint();
+		// 1. update the snake
+snake.update();
+		// 2. if the snake is colliding with its own body
+		// or if the snake is out of bounds, call gameOver
+if(snake.isHeadCollidingWithBody() || snake.isOutOfBounds()) {
+	gameOver();
+}
+		// 3. if the location of the head is equal to the location of the food,
+		// feed the snake and set the food location
+if ( snake.isLocationOnSnake(foodLocation)) {
+	snake.feed();
+	setFoodLocation();
+}
+		// 4. call panel.repaint();
+	panel.repaint();
 	}
 }
