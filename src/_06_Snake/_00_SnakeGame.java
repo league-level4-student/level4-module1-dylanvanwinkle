@@ -71,7 +71,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 			break;
 
 		default:
-			System.out.println("Something went wrong.");
+			System.out.println("Something went wrong in the start game method.");
 			System.exit(0);
 			break;
 		}
