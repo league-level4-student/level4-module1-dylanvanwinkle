@@ -40,32 +40,31 @@ public class Snake {
 		switch(currentDirection) {
 		
 		case RIGHT:
-			head.setLocation(new Location(headLocation.x + 1, headLocation.y));
+			headLocation.x += 1;
 			break;
 			
 		case LEFT:
-			head.setLocation(new Location(headLocation.x - 1, headLocation.y));
+		headLocation.x -= 1;
 			break;
 		case DOWN:
-			head.setLocation(new Location(headLocation.x, headLocation.y + 1));
+			headLocation.y += 1;
 			break;
 		case UP:
-			head.setLocation(new Location(headLocation.x, headLocation.y - 1));
-		
-		default: 
-			System.out.println("Something when wrong in the update method.");
-			break;
+			headLocation.y -= 1;
+		break;
 		}
 
 		//2. Iterate through the SnakeSegments in reverse order
 		//2a. Update each snake segment to the location of the segment 
 		//    in front of it.
 		for (int i = snake.size() - 1; i > 0; i--) {
-			snake.set(i, snake.get(i - 1));
+			SnakeSegment ss1 = snake.get(i);
+			SnakeSegment ss2 = snake.get(i-1);
+			ss1.setLocation(ss2.getLocation());
 		}
 		
 		//3. set the location of the head to the new location calculated in step 1
-		
+		head.setLocation(headLocation);
 
 		//4. set canMove to true
 		canMove = true;
@@ -89,7 +88,7 @@ if (currentDirection == Direction.UP && d == Direction.DOWN) {
 }else if (currentDirection == Direction.LEFT && d == Direction.RIGHT) {
 	canMove = false;
 }else {
-	System.out.println("Something when wrong in the set directuin method.");
+	canMove = true;
 }
 	}
 
@@ -105,7 +104,13 @@ snake.add(head);
 	public boolean isOutOfBounds() {
 		// 1. complete the method so it returns true if the head of the snake is outside
 		// of the window
-		if (head.getLocation() .x> _00_SnakeGame.WIDTH || head.getLocation() .y> _00_SnakeGame.HEIGHT) {
+		
+		//left and up barrier don't work
+		//If you eat food or press space you die
+		// you can't restart
+		
+		
+		if (head.getLocation() .x > _00_SnakeGame.WIDTH - 1 || head.getLocation() .y > _00_SnakeGame.HEIGHT - 1) {
 			return true;
 		}else {
 			return false;	
