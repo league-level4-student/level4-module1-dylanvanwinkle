@@ -27,6 +27,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	public static final int WINDOW_SCALE = 50;
 	public static final int WINDOW_WIDTH = WINDOW_SCALE * WIDTH;
 	public static final int WINDOW_HEIGHT = WINDOW_SCALE * HEIGHT;
+	Random ranGen = new Random();
 
 	private JFrame window;
 	private JPanel panel;
@@ -96,6 +97,8 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 				g2.setColor(FOOD_COLOR);
 				g2.drawOval(foodLocation.x * WINDOW_SCALE, foodLocation.y * WINDOW_SCALE, Snake.BODY_SIZE,
 						Snake.BODY_SIZE);
+				g.setColor(Color.GREEN);
+				g.drawString("You score is : " + snake.score, WINDOW_WIDTH - 150, 20);
 				snake.draw(g);
 			}
 		};
@@ -116,7 +119,10 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		window.dispose();
 
 		makeFrame();
-
+		int lx = ranGen.nextInt(WINDOW_WIDTH);
+		int ly = ranGen.nextInt(WINDOW_HEIGHT);
+		Location newHeadLocation = new Location(lx,ly);
+snake.reset(newHeadLocation);  
 		setFoodLocation();
 
 		startGame();
@@ -148,7 +154,6 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		case KeyEvent.VK_W:
 			snake.setDirection(Direction.UP);
 
-			System.out.println("up");
 			break;
 
 		case KeyEvent.VK_S:
@@ -156,9 +161,9 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 			break;
 		case KeyEvent.VK_SPACE:
 			snake.feed();
-
+break;
 		default:
-			JOptionPane.showMessageDialog(null, "invalid key.");
+			System.out.println("invalid key.");
 			break;
 		}
 		// if an arrow key is pressed, set the snake's
@@ -170,7 +175,6 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 
 	private void setFoodLocation() {
 		// 1. Create a new Location object that is set to a random location
-		Random ranGen = new Random();
 		int foodX = ranGen.nextInt(WIDTH);
 		int foodY = ranGen.nextInt(HEIGHT);
 		Location location = new Location(foodY, foodY);
