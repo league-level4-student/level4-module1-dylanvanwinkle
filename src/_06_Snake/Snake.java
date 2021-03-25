@@ -8,7 +8,6 @@ public class Snake {
 	public static final Color SNAKE_COLOR = Color.BLUE;
 	public static final int BODY_SIZE = 50;
 	int score = 0;
-
 	private SnakeSegment head;
 	private ArrayList<SnakeSegment> snake;
 
@@ -20,14 +19,14 @@ public class Snake {
 		snake = new ArrayList<SnakeSegment>();
 		head = new SnakeSegment(location, BODY_SIZE);
 		snake.add(head);
-
 		currentDirection = Direction.RIGHT;
 	}
 
 	public void feed() {
 		// 1. add a new SnakeSegment object to the snake
 		snake.add(new SnakeSegment(snake.get(0).getLocation(), BODY_SIZE));
-	score++;
+		
+			score += _00_SnakeGame.level;
 	}
 
 	public Location getHeadLocation() {
