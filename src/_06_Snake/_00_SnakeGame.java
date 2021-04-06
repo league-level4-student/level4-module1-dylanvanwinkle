@@ -32,25 +32,24 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 
 	private JFrame window;
 	private JPanel panel;
-
+	
 	private Snake snake;
 
 	private Timer timer;
-
+	Timer speedChange = new Timer(1*1000, this);
 	private Location foodLocation;
-	
+
 	int delay;
-	
+	int timeChangeCounter = 0;
 	int timeCounter = 0;
-	
-	 static int level = 1;
-	 int beninerLeveldelay = 150;
-	 int moderateLeveldelay = 100;
-	 int expertLeveldelay = 50;
-	 int beninerLevel = 1;
-	 int moderateLevel = 2;
-	 int expertLevel = 4;
-	 
+
+	static int level = 1;
+	int beninerLeveldelay = 150;
+	int moderateLeveldelay = 100;
+	int expertLeveldelay = 50;
+	int beninerLevel = 1;
+	int moderateLevel = 2;
+	int expertLevel = 4;
 
 	public _00_SnakeGame() {
 		createGame();
@@ -58,9 +57,10 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 
 	public void startGame() {
 		// 1. Save the instructions for the game in the following string variable.
-		String instructions = "1. Have fun!!" + "2.Use w,a,s,d to move" + "3.Expert gives you 4 times the points, Moderate gives you 2 times the points.";
+		String instructions = "1. Have fun!!" + "2.Use w,a,s,d to move"
+				+ "3.Expert gives you 4 times the points, Moderate gives you 2 times the points.";
 
-		String[] options = new String[] { "Expert", "Moderate", "Beginner", "Time Changing"};
+		String[] options = new String[] { "Expert", "Moderate", "Beginner", "Time Changing" };
 		int input = JOptionPane.showOptionDialog(null, instructions, "Snake", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
 		String choice = options[input];
@@ -82,9 +82,10 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		case "Beginner":
 			delay = beninerLeveldelay;
 			break;
-			
+
 		case "Time Changing":
 			delay = (200);
+			speedChange.start();
 			break;
 
 		default:
@@ -94,9 +95,9 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		}
 		// 3. start the timer
 		timer.setDelay(delay);
-		
+
 		timer.start();
-		}
+	}
 
 	public void makeFrame() {
 		snake = new Snake(new Location(WIDTH / 2, HEIGHT / 2));
@@ -132,14 +133,16 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		window.setVisible(true);
 
 	}
-public void createGame(){
-	makeFrame(); 
-	setFoodLocation();
-	startGame();
-}
+
+	public void createGame() {
+		makeFrame();
+		setFoodLocation();
+		startGame();
+	}
+
 	public void restartGame() {
 		window.dispose();
-createGame();
+		createGame();
 	}
 
 	public static void main(String[] args) {
@@ -175,7 +178,7 @@ createGame();
 			break;
 		case KeyEvent.VK_SPACE:
 			snake.feed();
-break;
+			break;
 		default:
 			System.out.println("invalid key.");
 			break;
@@ -211,7 +214,7 @@ break;
 		int choice = JOptionPane.showConfirmDialog(null, "Do you want to play again");
 		if (choice == JOptionPane.YES_OPTION) {
 			restartGame();
-		}else if (choice == JOptionPane.NO_OPTION) {
+		} else if (choice == JOptionPane.NO_OPTION) {
 			System.exit(0);
 		} else {
 			System.exit(0);
@@ -221,23 +224,25 @@ break;
 		// else, exit the game
 
 	}
-public void delayChange(){
-	if (timeCounter == 4*(1000/delay)) {
-	delay = beninerLevel;
-	System.out.println("1");
-}
-if (timeCounter == 10*(1000/delay)) {
-	delay = moderateLeveldelay;
-	level = moderateLevel;
-	System.out.println("2");
-}
-	if (timeCounter == 18*(1000/delay)) {
-		delay = expertLeveldelay;
-		level = expertLevel;
-		System.out.println("3");
-}
-	timer.setDelay(delay);
-}
+
+	public void delayChange() {
+		if (timeCounter == 4 * (1000 / delay)) {
+			delay = beninerLevel;
+			System.out.println("1");
+		}
+		if (timeCounter == 10 * (1000 / delay)) {
+			delay = moderateLeveldelay;
+			level = moderateLevel;
+			System.out.println("2");
+		}
+		if (timeCounter == 18 * (1000 / delay)) {
+			delay = expertLeveldelay;
+			level = expertLevel;
+			System.out.println("3");
+		}
+		timer.setDelay(delay);
+	}
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -246,6 +251,14 @@ if (timeCounter == 10*(1000/delay)) {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// 1. update the snake
+		if (e.getSource() == speedChange) {
+			delay = delay - 5;
+			timer.setDelay(delay);
+			timeChangeCounter++;
+			if (timeChangeCounter == 15) {
+				speedChange.stop();
+			}
+		}else {
 		snake.update();
 		// 2. if the snake is colliding with its own body
 		// or if the snake is out of bounds, call gameOver
@@ -260,10 +273,11 @@ if (timeCounter == 10*(1000/delay)) {
 		}
 		// 4. call panel.repaint();
 		panel.repaint();
-		
+
 		timeCounter++;
 		if (timeCounter % delay == 0) {
 			delayChange();
 		}
-	}	
+	}
+	}
 }
